@@ -60,8 +60,10 @@ def login():
         "msg": "OK",
         "data": {}
     }
-    username = request.form.get('username', type=str)  # formData格式区分
-    password = request.form.get('password', type=str)  # formData格式区分
+    getjson = request.get_json()
+    username = str(getjson.get('username'))  # json数据格式
+    password = str(getjson.get('password'))  # json数据格式
+    print(username, password)
     item_list = User.query.all()  # 提取数据库数据
     if len(username) >= 16 or len(password) >= 16:
         res['code'] = -2
