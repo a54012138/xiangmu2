@@ -136,37 +136,54 @@ def weather():
     (data1, data14) = get_weather()
     for item in data1:
         insert_stmt = insert(Weatherdata).values(
-            hours=item[0], temperature=item[1],
-            direction=item[2], level=item[3],
-            precipitation=item[4], humidity=item[5],
+            hours=item[0] if item[0] != '' else 0,
+            temperature=item[1] if item[1] != '' else 0,
+            direction=item[2] if item[2] != '' else 0,
+            level=item[3] if item[3] != '' else 0,
+            precipitation=item[4] if item[4] != '' else 0,
+            humidity=item[5] if item[5] != '' else 0,
             quality=item[6] if item[6] != '' else 0
         )
 
         on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(
-            temperature=item[1],
-            direction=item[2], level=item[3],
-            precipitation=item[4], humidity=item[5],
-            quality=item[6]
+            hours=item[0] if item[0] != '' else 0,
+            temperature=item[1] if item[1] != '' else 0,
+            direction=item[2] if item[2] != '' else 0,
+            level=item[3] if item[3] != '' else 0,
+            precipitation=item[4] if item[4] != '' else 0,
+            humidity=item[5] if item[5] != '' else 0,
+            quality=item[6] if item[6] != '' else 0
         )
 
         db.session.execute(on_duplicate_key_stmt)
         db.session.commit()
 
     for item in data14:
-        insert_stmt = insert(Weatherdata14).values(date=item[0], weather=item[1],
-                                                   min=item[2], max=item[3],
-                                                   wind_1=item[4], wind_2=item[5],
-                                                   level=item[6])
+        insert_stmt = insert(Weatherdata14).values(
+            date=item[0] if item[0] != '' else 0,
+            weather=item[1] if item[1] != '' else 0,
+            min=item[2] if item[2] != '' else 0,
+            max=item[3] if item[3] != '' else 0,
+            wind_1=item[4] if item[4] != '' else 0,
+            wind_2=item[5] if item[5] != '' else 0,
+            level=item[6] if item[6] != '' else 0
+        )
 
         on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(
-            date=item[0], weather=item[1],
-            min=item[2], max=item[3],
-            wind_1=item[4], wind_2=item[5],
-            level=item[6]
+            date=item[0] if item[0] != '' else 0,
+            weather=item[1] if item[1] != '' else 0,
+            min=item[2] if item[2] != '' else 0,
+            max=item[3] if item[3] != '' else 0,
+            wind_1=item[4] if item[4] != '' else 0,
+            wind_2=item[5] if item[5] != '' else 0,
+            level=item[6] if item[6] != '' else 0
         )
 
         db.session.execute(on_duplicate_key_stmt)
         db.session.commit()
+
+    res["data"]["data1"] = data1
+    res["data"]["data14"] = data14
 
     return make_response(res)
 
